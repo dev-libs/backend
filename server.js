@@ -11,7 +11,7 @@ server.use(cors());
 server.use(helmet());
 server.use(logger);
 
-// server.use('/auth', authRouter);
+server.use('/auth', authRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({ Dustin: "It's working!!" });
