@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const authRouter = require('./auth/auth-router.js');
+const libRouter = require('./dev-libs/lib-router.js');
 
 const server = express();
 
@@ -12,6 +13,7 @@ server.use(helmet());
 server.use(logger);
 
 server.use('/auth', authRouter);
+server.use('/libs', libRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({ Dustin: "It's working!!" });
