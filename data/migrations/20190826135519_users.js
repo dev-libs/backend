@@ -8,34 +8,17 @@ exports.up = function(knex) {
       tbl.string('password', 255)
         .notNullable();
     })
-    .createTable('answers', tbl => {
+    .createTable('categories', tbl => {
       tbl.increments();
-      tbl.string('answer', 255)
-        .notNullable();
-      tbl.integer('lib_id')
-        .notNullable()
-        .unsigned()
-        .references('id')
-        .inTable('libs')
-        .onDelete('RESTRICT')
-        .onUpdate('CASCADE');
-      tbl.integer('user_id')
-        .notNullable()
-        .unsigned()
-        .references('id')
-        .inTable('users')
-        .onDelete('RESTRICT')
-        .onUpdate('CASCADE');
-      tbl.integer('type_id')
-        .notNullable()
-        .unsigned()
-        .references('id')
-        .inTable('types')
-        .onDelete('RESTRICT')
-        .onUpdate('CASCADE');
-      tbl.integer('order')
-        .notNullable()
-        .unsigned();
+      tbl.string('category', 255)
+      .notNullable()
+      .unique();
+    })
+    .createTable('types', tbl => {
+      tbl.increments();
+      tbl.string('type', 255)
+      .notNullable()
+      .unique();
     })
     .createTable('libs', tbl => {
       tbl.increments();
@@ -52,25 +35,42 @@ exports.up = function(knex) {
         .onDelete('RESTRICT')
         .onUpdate('CASCADE');
     })
-    .createTable('categories', tbl => {
-      tbl.increments();
-      tbl.string('category', 255)
-        .notNullable()
-        .unique();
-    })
-    .createTable('types', tbl => {
-      tbl.increments();
-      tbl.string('type', 255)
-        .notNullable()
-        .unique();
-    })
+  .createTable('answers', tbl => {
+    tbl.increments();
+    tbl.string('answer', 255)
+      .notNullable();
+    tbl.integer('lib_id')
+      .notNullable()
+      .unsigned()
+      .references('id')
+      .inTable('libs')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE');
+    tbl.integer('user_id')
+      .notNullable()
+      .unsigned()
+      .references('id')
+      .inTable('users')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE');
+    tbl.integer('type_id')
+      .notNullable()
+      .unsigned()
+      .references('id')
+      .inTable('types')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE');
+    tbl.integer('order')
+      .notNullable()
+      .unsigned();
+  })
 };
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists('types')
-    .dropTableIfExists('categories')
-    .dropTableIfExists('libs')
-    .dropTableIfExists('answers')
-    .dropTableIfExists('users')
+  .dropTableIfExists('answers')
+  .dropTableIfExists('libs')
+  .dropTableIfExists('types')
+  .dropTableIfExists('categories')
+  .dropTableIfExists('users')
 };
