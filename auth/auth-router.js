@@ -38,6 +38,14 @@ router.post('/login', (req, res) => {
         })
 })
 
+router.get('/users', restricted, (req, res) => {
+    Users.getUsers()
+        .then(list => {
+            res.status(200).json(list);
+        })
+        .catch(err => res.status(500).json(err))
+})
+
 function generateToken(user) {
     const payload = {
         subject: user.id,
