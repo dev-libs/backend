@@ -11,7 +11,8 @@ router.post('/register', async (req, res) => {
     user.password = bcrypt.hashSync(user.password, 10);
     try {
         const newUser = await Users.addUser(user);
-        res.status(201).json(newUser);
+        // res.status(201).json(newUser);
+        res.status(201).json({ message: `${user.username}'s account successfully created!` })
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -33,7 +34,7 @@ router.post('/login', (req, res) => {
             }
         })
         .catch(err => {
-            res.status(200).json(err);
+            res.status(200).json(err.message);
         })
 })
 
