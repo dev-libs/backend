@@ -16,14 +16,16 @@ router.get('/play/:id', restricted, async (req, res) => {
     }
 })
 
+let instance = 1;
 // POST ANSWERS 
 router.post('/play', restricted, (req, res) => {
     const userAnswers = req.body.answers;
+    instance++
     const arr = [];
     if (userAnswers) {
         userAnswers.forEach(async answer => {
             try {
-                const otherthing = await Libs.addAnswer(answer)
+                const otherthing = await Libs.addAnswer({...answer, instance})
                 if (otherthing) {
                     arr.push(otherthing)
                 } else {
@@ -55,18 +57,40 @@ router.get('/user/:id', restricted, async (req, res) => {
 })
 
 // GET LIBS BY CATEGORY
-router.get('/:id', (req, res) => {
-
+router.get('/:id', restricted, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const lib = await Libs.getLibByCategory(id);        
+        const answers = await Libs.getCompletedLibsByCategory(id);
+        if (!id) {
+            res.status(404).json({ error: 'no category with given id exists' });
+        } else {
+            res.status(200).json({ lib, answers});
+        }
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
 })
 
 router.get('/answers', restricted, (req, res) => {
     Libs.getAnswers()
         .then(answers => {
+            console.log("lib answers: ", answers);
             res.status(200).json(answers)
         })
         .catch(error => {
             res.status(500).json(error.message)
         })
 })
+
+router.get('/', (req, res) => {
+    Libs.getLibs()
+        .then(libs => {
+            res.status(200).json(libs)
+        })
+        .catch(err => {
+            res.status(500).json(err.message)
+        })
+});
 
 module.exports = router;
