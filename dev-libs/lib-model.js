@@ -35,8 +35,6 @@ function getCompletedLibsByCategory(category) {
         .innerJoin('categories as c', 'l.category_id', '=', 'c.id')
         .select('a.answer', 'a.user_id', 'a.lib_id', 'a.order', 'a.instance')
         .where('c.id', '=', category)
-        // .groupBy('a.instance')
-        // .orderBy('a.instance')
 }
 function getLibs(){
     return db('libs');
