@@ -3,7 +3,9 @@ const db = require('../data/dbConfig.js');
 module.exports = {
     getLibByCategory,
     addAnswer,
-    getAnswers
+    getAnswers,
+    getUserLibs,
+    getCompletedLibsByCategory
 }
 
 function getLibByCategory(category) {
@@ -17,4 +19,13 @@ function addAnswer(answer) {
 }
 function getAnswers() {
     return db('answers');
+}
+function getUserLibs(id) {
+    return db('answers as a')
+        .innerJoin('libs as l', 'a.lib_id', '=', 'l.id')
+        .select('l.name', 'l.story', 'a.answer', 'a.order')
+        .where('a.user_id', '=', id)
+}
+function getCompletedLibsByCategory() {
+
 }
