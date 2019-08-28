@@ -63,6 +63,9 @@ exports.up = function(knex) {
     tbl.integer('order')
       .notNullable()
       .unsigned();
+    tbl.integer('instance')
+      .notNullable()
+      .unsigned()
   })
 };
 
