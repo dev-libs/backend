@@ -24,3 +24,18 @@ describe('register', () => {
         })
     })
 })
+describe('login', () => {
+    describe('login type', () => {
+        it('return JSON', () => {
+            return request(authRouter)
+                .post('/login')
+                .send({
+                    username: 'bob',
+                    password: 'bob'
+                })
+                .then(res => {
+                    expect(res.type).toMatch(/json/)
+                })
+        })
+    })
+})
