@@ -41,6 +41,33 @@ router.post('/play', restricted, (req, res) => {
     }
 })
 
+// UPDATE ANSWERS
+router.put('/:cId/instance/:id', restricted, (req, res) => {
+    const categoryId = req.params.cId;
+    const instanceId = req.params.id;
+    const changes = req.body;
+    Libs.updateAnswers(categoryId, instanceId, changes)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(error => {
+            res.status(500).json(error.message)
+        })
+})
+
+// DELETE ANSWERS
+router.delete('/:cId/instance/:id', restricted, (req, res) => {
+    const categoryId = req.params.cId;
+    const instanceId = req.params.id;
+    Libs.deleteAnswers(categoryId, instanceId)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(error => {
+            res.status(500).json(error.message)
+        })
+})
+
 // GET USERS LIBS
 router.get('/user/:id', restricted, async (req, res) => {
     const { id } = req.params;
