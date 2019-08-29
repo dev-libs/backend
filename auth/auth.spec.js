@@ -24,3 +24,12 @@ describe('register', () => {
         })
     })
 })
+describe('login', () => {
+    describe('login type', () => {
+        it('return JSON', () => {
+            return request(authRouter)
+                .post('/login')
+                .send('')
+        })
+    })
+})

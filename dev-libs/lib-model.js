@@ -34,14 +34,16 @@ function getCompletedLibsByCategory(category) {
     .select('a.answer', 'a.user_id', 'a.lib_id', 'a.order', 'a.instance')
     .where('c.id', '=', category)
 }
-function updateAnswers(cId, iId, changes) {
+function updateAnswers(lId, iId, changes) {
     return db('answers as a')
-        .where('a.instance', '=', id)
+        .where('a.instance', '=', iId)
+        .where('a.lib_id', '=', lId)
         .update(changes)
 }
-function deleteAnswers(cId, iId, ) {
+function deleteAnswers(lId, iId, ) {
     return db('answers as a')
-        .where('a.instance', '=', id)
+        .where('a.instance', '=', iId)
+        .where('a.lib_id', '=', lId)
         .delete()
 }
 function getAnswers() {

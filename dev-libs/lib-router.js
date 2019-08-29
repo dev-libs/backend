@@ -42,11 +42,24 @@ router.post('/play', restricted, (req, res) => {
 })
 
 // UPDATE ANSWERS
-router.put('/:cId/instance/:id', restricted, (req, res) => {
-    const categoryId = req.params.cId;
+router.put('/:lId/instance/:id', restricted, (req, res) => {
+    const libId = req.params.lId;
     const instanceId = req.params.id;
-    const changes = req.body;
-    Libs.updateAnswers(categoryId, instanceId, changes)
+    const changes = req.body.answers;
+    if(changes) {
+        changes.forEach(async answer => {
+            try {
+                const something = await Libs.updateAnswers(answer)
+                !something && res.status(500).json({ error: 'problem updating answers' })
+            } catch (err) {
+                res.status(500).json(err.message)
+            }
+        })
+        res.status(200).json({ message: 'successfully updated answers' })
+    } else {
+        res.status(400).json({ error: 'answers missing in request' })
+    }
+    Libs.updateAnswers(libId, instanceId, changes)
         .then(response => {
             res.status(200).json(response)
         })
@@ -56,10 +69,10 @@ router.put('/:cId/instance/:id', restricted, (req, res) => {
 })
 
 // DELETE ANSWERS
-router.delete('/:cId/instance/:id', restricted, (req, res) => {
-    const categoryId = req.params.cId;
+router.delete('/:lId/instance/:id', restricted, (req, res) => {
+    const libId = req.params.lId;
     const instanceId = req.params.id;
-    Libs.deleteAnswers(categoryId, instanceId)
+    Libs.deleteAnswers(libId, instanceId)
         .then(response => {
             res.status(200).json(response)
         })
