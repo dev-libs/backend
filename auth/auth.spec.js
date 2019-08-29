@@ -29,7 +29,13 @@ describe('login', () => {
         it('return JSON', () => {
             return request(authRouter)
                 .post('/login')
-                .send('')
+                .send({
+                    username: 'bob',
+                    password: 'bob'
+                })
+                .then(res => {
+                    expect(res.type).toMatch(/json/)
+                })
         })
     })
 })

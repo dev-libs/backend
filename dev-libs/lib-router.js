@@ -49,7 +49,7 @@ router.put('/:lId/instance/:id', restricted, (req, res) => {
     if(changes) {
         changes.forEach(async answer => {
             try {
-                const something = await Libs.updateAnswers(answer)
+                const something = await Libs.updateAnswers(libId, instanceId, answer)
                 !something && res.status(500).json({ error: 'problem updating answers' })
             } catch (err) {
                 res.status(500).json(err.message)
@@ -59,13 +59,6 @@ router.put('/:lId/instance/:id', restricted, (req, res) => {
     } else {
         res.status(400).json({ error: 'answers missing in request' })
     }
-    Libs.updateAnswers(libId, instanceId, changes)
-        .then(response => {
-            res.status(200).json(response)
-        })
-        .catch(error => {
-            res.status(500).json(error.message)
-        })
 })
 
 // DELETE ANSWERS
